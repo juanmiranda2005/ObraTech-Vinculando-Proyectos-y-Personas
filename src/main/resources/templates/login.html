@@ -118,14 +118,20 @@
                         </button>
                     </div>
                 </label>
-
+                <div class="flex gap-6 mt-6">
                 <!-- Botón de enviar -->
                 <button type="submit"
-                    class="w-full bg-primary text-background-dark h-14 rounded-lg text-base font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors duration-200">
+                    class="flex-1 bg-primary text-background-dark h-14 rounded-lg text-base font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors duration-200">
                     Iniciar Sesión
                 </button>
-
                 <p th:if="${mensaje}" th:text="${mensaje}" class="text-green-500 text-center"></p>
+
+                <button type="button"
+                    onclick="window.location.href='/index'"
+                    class="flex-1 bg-primary text-background-dark h-14 rounded-lg text-base font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors duration-200">
+                    Cancelar
+                </button>
+            </div>
             </form>
             <div class="flex items-center px-4">
                 <hr class="w-full border-t border-text-secondary-dark/30" />

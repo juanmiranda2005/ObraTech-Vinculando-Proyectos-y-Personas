@@ -124,47 +124,9 @@
                     <span class="material-symbols-outlined text-text-secondary-dark">analytics</span>
                     <span class="text-text-secondary-dark">Reportes de Avance</span>
                 </a>
-                <a th:href="@{/empleados/contratar}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg">
-                    <span class="material-symbols-outlined text-text-secondary-dark">groups</span>
-                    <span class="text-text-secondary-dark">Contratar Empleados</span>
-                </a>
-                <a th:href="@{/calificaciones/empleados}"
-                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg">
-                    <span class="material-symbols-outlined text-text-secondary-dark">star</span>
-                    <span class="text-text-secondary-dark">Calificar Empleados</span>
-                </a>
                 <a th:href="@{/perfil-general}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg">
                     <span class="material-symbols-outlined text-text-secondary-dark">person</span>
                     <span class="text-text-secondary-dark"> Mi Historial</span>
-                </a>
-            </div>
-
-            <!-- Opciones para Empleado -->
-            <div th:if="${session.usuario.role == 'ROLE_WORKER'}">
-                <a th:href="@{/perfil-laboral}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg">
-                    <span class="material-symbols-outlined text-text-secondary-dark">person</span>
-                    <span class="text-text-secondary-dark">Perfil Laboral</span>
-                </a>
-                <a th:href="@{/postulaciones}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg">
-                    <span class="material-symbols-outlined text-text-secondary-dark">assignment_turned_in</span>
-                    <span class="text-text-secondary-dark">Proyectos Disponibles</span>
-                </a>
-                <a th:href="@{/proyectos/asignados}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg">
-                    <span class="material-symbols-outlined text-text-secondary-dark">construction</span>
-                    <span class="text-text-secondary-dark">Proyectos Asignados</span>
-                </a>
-                <a th:href="@{/reportes/trabajo}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg">
-                    <span class="material-symbols-outlined text-text-secondary-dark">analytics</span>
-                    <span class="text-text-secondary-dark">Reportes de Trabajo</span>
-                </a>
-                <a th:href="@{/calificaciones/contratista}"
-                    class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg">
-                    <span class="material-symbols-outlined text-text-secondary-dark">star</span>
-                    <span class="text-text-secondary-dark">Calificar Contratista</span>
-                </a>
-                <a th:href="@{/historial-laboral}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg">
-                    <span class="material-symbols-outlined text-text-secondary-dark">folder</span>
-                    <span class="text-text-secondary-dark">Historial Laboral</span>
                 </a>
             </div>
         </nav>

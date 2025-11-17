@@ -8,11 +8,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.obratech.entity.Cliente;
 import com.obratech.entity.Contratista;
-import com.obratech.entity.Trabajador;
 import com.obratech.entity.Usuario;
 import com.obratech.repository.ClienteRepository;
 import com.obratech.repository.ContratistaRepository;
-import com.obratech.repository.TrabajadorRepository;
 import com.obratech.service.UsuarioService;
 
 @Controller
@@ -21,24 +19,21 @@ public class UsuarioController {
     private final UsuarioService usuarioService;
     private final ClienteRepository clienteRepository;
     private final ContratistaRepository contratistaRepository;
-    private final TrabajadorRepository trabajadorRepository;
 
     public UsuarioController(UsuarioService usuarioService,
-                             ClienteRepository clienteRepository,
-                             ContratistaRepository contratistaRepository,
-                             TrabajadorRepository trabajadorRepository) {
+            ClienteRepository clienteRepository,
+            ContratistaRepository contratistaRepository) {
         this.usuarioService = usuarioService;
         this.clienteRepository = clienteRepository;
         this.contratistaRepository = contratistaRepository;
-        this.trabajadorRepository = trabajadorRepository;
     }
 
     // 📌 Registro de usuario
     @PostMapping("/registro")
     public String registerUser(@RequestParam String username,
-                               @RequestParam String password,
-                               @RequestParam(required = false) String role,
-                               Model model) {
+            @RequestParam String password,
+            @RequestParam(required = false) String role,
+            Model model) {
 
         System.out.println("📩 Username recibido: " + username);
         System.out.println("🔑 Password recibido: " + password);
@@ -53,7 +48,6 @@ public class UsuarioController {
         } else {
             switch (role.toLowerCase()) {
                 case "contratista" -> u.setRole("ROLE_CONTRACTOR");
-                case "empleado" -> u.setRole("ROLE_WORKER");
                 case "cliente" -> u.setRole("ROLE_CLIENT");
                 default -> u.setRole("ROL_USER");
             }
@@ -71,13 +65,10 @@ public class UsuarioController {
             } else if (assignedRole.contains("contratista")) {
                 Contratista c = new Contratista();
                 contratistaRepository.save(c);
-            } else if (assignedRole.contains("empleado")) {
-                Trabajador t = new Trabajador();
-                trabajadorRepository.save(t);
             }
 
             model.addAttribute("mensaje", "✅ Usuario registrado correctamente");
-            return "login"; // vuelve al login.html
+            return "login";
 
         } catch (IllegalArgumentException e) {
             model.addAttribute("mensaje", "⚠️ " + e.getMessage());

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" class="dark" lang="es">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Inicio de Sesión</title>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FF9900",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#121212",
+                        "surface-dark": "#1A1A1A",
+                        "text-main-dark": "#E0E0E0",
+                        "text-secondary-dark": "#A0A0A0",
+                        "error": "#FF4C4C",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem",
+                        "lg": "0.75rem",
+                        "xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+        function togglePasswordVisibility(button) {
+            const input = button.parentElement.querySelector('input[type="password"], input[type="text"]');
+            const icon = button.querySelector('span');
+            if (input.type === "password") {
+                input.type = "text";
+                icon.textContent = "visibility_off";
+            } else {
+                input.type = "password";
+                icon.textContent = "visibility";
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-background-dark font-display">
+    <div
+        class="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-dark p-4 group/design-root overflow-x-hidden">
+        <div class="w-full max-w-md space-y-8">
+            <!-- Logo -->
+            <div class="flex justify-center">
+                <a href="/">
+                    <div class="flex items-center justify-center w-20 h-20 bg-primary rounded-xl">
+                        <span class="material-symbols-outlined text-background-dark text-5xl">construction</span>
+                    </div>
+                </a>
+            </div>
+            <!-- Título -->
+            <div class="px-4 py-3">
+                <div class="flex h-12 flex-1 items-center justify-center rounded-lg bg-surface-dark p-1">
+                    <label for="iniciar-sesion-radio"
+                        class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-2 has-[:checked]:bg-primary has-[:checked]:text-background-dark has-[:checked]:font-semibold text-text-secondary-dark text-base font-medium leading-normal transition-colors duration-150">
+                        <span class="truncate">Iniciar Sesión</span>
+                        <input id="iniciar-sesion-radio" checked class="invisible w-0" name="auth-option" type="radio"
+                            value="Iniciar Sesión" onchange="window.location.href='/desboard'" />
+                    </label>
+                </div>
+            </div>
+            <!-- Mensajes de error/success -->
+            <div th:if="${error}" class="px-4">
+                <div class="bg-error/20 border border-error/50 text-error px-4 py-3 rounded-lg text-sm">
+                    <span th:text="${error}"></span>
+                </div>
+            </div>
+            <div th:if="${success}" class="px-4">
+                <div class="bg-success/20 border border-success/50 text-success px-4 py-3 rounded-lg text-sm">
+                    <span th:text="${success}"></span>
+                </div>
+            </div>
+
+            <form action="/login" method="post" class="space-y-6 px-4">
+
+                <!-- Correo -->
+                <label class="flex flex-col flex-1">
+                    <p class="text-text-main-dark text-sm font-medium leading-normal pb-2">Correo Electrónico</p>
+                    <div class="flex w-full flex-1 items-stretch rounded-lg">
+                        <div
+                            class="text-text-secondary-dark flex border-none bg-surface-dark items-center justify-center pl-4 rounded-l-lg border-r-0">
+                            <span class="material-symbols-outlined">mail</span>
+                        </div>
+                        <input class="form-input flex w-full ..." type="email" name="username"
+                            placeholder="ejemplo@email.com" required />
+
+                    </div>
+                </label>
+
+                <!-- Contraseña -->
+                <label class="flex flex-col flex-1">
+                    <p class="text-text-main-dark text-sm font-medium leading-normal pb-2">Contraseña</p>
+                    <div class="flex w-full flex-1 items-stretch rounded-lg">
+                        <div
+                            class="text-text-secondary-dark flex border-none bg-surface-dark items-center justify-center pl-4 rounded-l-lg border-r-0">
+                            <span class="material-symbols-outlined">lock</span>
+                        </div>
+                        <input
+                            class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main-dark focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-secondary-dark p-4 rounded-r-none border-r-0 text-base font-normal leading-normal"
+                            type="password" name="password" placeholder="Crea una contraseña segura" required />
+                        <button type="button" aria-label="Mostrar/Ocultar contraseña"
+                            class="text-text-secondary-dark flex border-none bg-surface-dark items-center justify-center pr-4 rounded-r-lg border-l-0"
+                            onclick="togglePasswordVisibility(this)">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
+                </label>
+
+                <!-- Botón de enviar -->
+                <button type="submit"
+                    class="w-full bg-primary text-background-dark h-14 rounded-lg text-base font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors duration-200">
+                    Iniciar Sesión
+                </button>
+
+                <p th:if="${mensaje}" th:text="${mensaje}" class="text-green-500 text-center"></p>
+            </form>
+            <div class="flex items-center px-4">
+                <hr class="w-full border-t border-text-secondary-dark/30" />
+                <span class="px-2 text-text-secondary-dark text-sm">o continuar con</span>
+                <hr class="w-full border-t border-text-secondary-dark/30" />
+            </div>
+            <!-- Social Login Buttons -->
+            <div class="space-y-4 px-4">
+                <button
+                    class="w-full flex items-center justify-center gap-3 bg-surface-dark text-text-main-dark h-14 rounded-lg text-base font-medium hover:bg-white/10 transition-colors duration-200">
+                    <img alt="Google logo" class="w-6 h-6"
+                        src="https://lh3.googleusercontent.com/aida-public/AB6AXuCBKeNzJRJXHwt-Rq-_oa9-JC4hHw_lX-OwxqEpkqrJS4wYpfXXW0UQKwqhan5xBTASVtNvg4wfuDUAJpmzs0aZopcurTbdV0sU2WZMFhsM9_ObW09g4lagvwFtaPiP2_8SwUHnKMKeOungUjsTx6o3_s6QyilzUVnh91qdNPBv4N82R1U4XQDlyaBDj1AqBaRvfcoiaEJS9ZrJg2Ox9oJlqmgMPTVEqJhwd9wy2xFyVZ5BTLSLxackMIBqEn5E6IouINDiqEUuEwo" />
+                    Continuar con Google
+                </button>
+                <button
+                    class="w-full flex items-center justify-center gap-3 bg-surface-dark text-text-main-dark h-14 rounded-lg text-base font-medium hover:bg-white/10 transition-colors duration-200">
+                    <svg class="w-6 h-6 fill-current" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                            d="M12.02,2.5C10.02,2.5,8.1,3.4,6.7,4.8C5.2,6.3,4.4,8.1,4.4,10.1C4.4,12,5.2,14,6.7,15.4C7.5,16.2,8.4,16.8,9.5,17.2C9.5,17.2,10.5,21.5,10.5,21.5C10.5,21.5,12.1,17.4,13.7,17.3C14.7,17,15.6,16.4,16.4,15.6C16.5,15.5,16.6,15.4,16.7,15.3C16.8,15.2,16.8,15.1,16.9,15C17.1,14.6,17.2,14.2,17.3,13.8C18.4,13.5,19.6,12.5,19.6,11.1C19.6,9.6,18.8,8.7,17.5,8.4C17.1,7.2,16,6.3,14.7,5.9C14.2,4.5,12.3,2.5,12.02,2.5ZM13.2,11.8C13.2,12.8,12.2,13.6,11.2,13.6C10.2,13.6,9.3,12.8,9.3,11.8C9.3,10.8,10.2,10,11.2,10C12.2,10,13.2,10.8,13.2,11.8Z">
+                        </path>
+                    </svg>
+                    Continuar con Apple
+                </button>
+            </div>
+            <!-- Términos y Condiciones -->
+            <div class="text-center text-text-secondary-dark text-xs px-4">
+                <a class="hover:text-primary hover:underline" href="#">Términos y Condiciones</a>
+                <span class="mx-2">•</span>
+                <a class="hover:text-primary hover:underline" href="#">Política de Privacidad</a>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

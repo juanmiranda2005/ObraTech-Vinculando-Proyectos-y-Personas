@@ -1,13 +1,13 @@
 <!DOCTYPE html>
-<html class="dark" lang="es">
+<html xmlns:th="http://www.thymeleaf.org" class="dark" lang="es">
     <head>
         <meta charset="utf-8"/>
         <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-        <title>Registro / Inicio de Sesión</title>
-        <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+        <title>Registro</title>
         <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"/>
         <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet"/>
-        <script id="tailwind-config">
+        <script src="https://cdn.tailwindcss.com"></script>
+        <script>
             tailwind.config = {
                 darkMode: "class",
                 theme: {
@@ -58,7 +58,7 @@
             }
         </style>
     </head>
-    <body class="bg-background-dark font-display">
+    <body class="bg-background-dark dark font-display text-white" style="background: radial-gradient(circle at center, #1f1f1f 0%, #0f0f0f 100%);">
         <div class="relative flex min-h-screen w-full flex-col items-center justify-center bg-background-dark p-4 group/design-root overflow-x-hidden">
             <div class="w-full max-w-md space-y-8">
                 <!-- Logo -->
@@ -72,53 +72,55 @@
                 <!-- Título -->
                 <div class="px-4 py-3">
                     <div class="flex h-12 flex-1 items-center justify-center rounded-lg bg-surface-dark p-1">
-                        <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-2 has-[:checked]:bg-primary has-[:checked]:text-background-dark has-[:checked]:font-semibold text-text-secondary-dark text-base font-medium leading-normal transition-colors duration-200">
+                        <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-2 has-[:checked]:bg-primary has-[:checked]:text-background-dark has-[:checked]:font-semibold text-text-secondary-dark text-base font-medium leading-normal transition-colors duration-150">
                             <span class="truncate">Crear Cuenta</span>
                             <input checked class="invisible w-0" name="auth-option" type="radio" value="Crear Cuenta"/>
-                        </label>
-                        <label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-md px-2 has-[:checked]:bg-primary has-[:checked]:text-background-dark has-[:checked]:font-semibold text-text-secondary-dark text-base font-medium leading-normal transition-colors duration-200">
-                            <span class="truncate">Iniciar Sesión</span>
-                            <input class="invisible w-0" name="auth-option" type="radio" value="Iniciar Sesión"/>
                         </label>
                     </div>
                 </div>
                 <!-- Formulario de Crear Cuenta -->
-                <div class="space-y-6 px-4">
+                <form th:action="@{/registro}" action="/registro" method="post" class="space-y-6 px-4">
                     <label class="flex flex-col flex-1">
                         <p class="text-text-main-dark text-sm font-medium leading-normal pb-2">Correo Electrónico</p>
                         <div class="flex w-full flex-1 items-stretch rounded-lg">
                             <div class="text-text-secondary-dark flex border-none bg-surface-dark items-center justify-center pl-4 rounded-l-lg border-r-0">
                                 <span class="material-symbols-outlined">mail</span>
                             </div>
-                            <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main-dark focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-secondary-dark p-4 rounded-l-none text-base font-normal leading-normal" placeholder="ejemplo@email.com" value=""/>
+                            <input name="username" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main-dark focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-secondary-dark p-4 rounded-l-none text-base font-normal leading-normal" placeholder="ejemplo@email.com" value=""/>
                         </div>
-                    </label>
-                    <label class="flex flex-col flex-1">
-                        <p class="text-text-main-dark text-sm font-medium leading-normal pb-2">Contraseña</p>
-                        <div class="flex w-full flex-1 items-stretch rounded-lg">
-                            <div class="text-text-secondary-dark flex border-none bg-surface-dark items-center justify-center pl-4 rounded-l-lg border-r-0">
-                                <span class="material-symbols-outlined">lock</span>
-                            </div>
-                            <input class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main-dark focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-secondary-dark p-4 rounded-r-none border-r-0 text-base font-normal leading-normal" placeholder="Crea una contraseña segura" type="password" value=""/>
-                            <button aria-label="Mostrar/Ocultar contraseña" class="text-text-secondary-dark flex border-none bg-surface-dark items-center justify-center pr-4 rounded-r-lg border-l-0">
-                                <span class="material-symbols-outlined">visibility</span>
-                            </button>
+                   <!-- Contraseña -->
+                <label class="flex flex-col flex-1">
+                    <p class="text-text-main-dark text-sm font-medium leading-normal pb-2">Contraseña</p>
+                    <div class="flex w-full flex-1 items-stretch rounded-lg">
+                        <div
+                            class="text-text-secondary-dark flex border-none bg-surface-dark items-center justify-center pl-4 rounded-l-lg border-r-0">
+                            <span class="material-symbols-outlined">lock</span>
                         </div>
-                    </label>
+                        <input
+                            class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main-dark focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-secondary-dark p-4 rounded-r-none border-r-0 text-base font-normal leading-normal"
+                            type="password" name="password" placeholder="Crea una contraseña segura" required />
+                        <button type="button" aria-label="Mostrar/Ocultar contraseña"
+                            class="text-text-secondary-dark flex border-none bg-surface-dark items-center justify-center pr-4 rounded-r-lg border-l-0"
+                            onclick="togglePasswordVisibility(this)">
+                            <span class="material-symbols-outlined">visibility</span>
+                        </button>
+                    </div>
+                </label>
+                <!-- Rol de Usuario -->
                     <label class="flex flex-col flex-1">
                         <p class="text-text-main-dark text-sm font-medium leading-normal pb-2">Soy...</p>
-                        <select class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main-dark focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-secondary-dark p-4 text-base font-normal leading-normal">
+                        <select name="role" class="form-input flex w-full min-w-0 flex-1 resize-none overflow-hidden rounded-lg text-text-main-dark focus:outline-none focus:ring-2 focus:ring-primary/50 border-none bg-surface-dark h-14 placeholder:text-text-secondary-dark p-4 text-base font-normal leading-normal">
                             <option class="text-text-secondary-dark" value="none">Selecciona un tipo de usuario</option>
-                            <option class="text-text-main-dark" value="empresa">Empresa</option>
                             <option class="text-text-main-dark" value="contratista">Contratista</option>
                             <option class="text-text-main-dark" value="trabajador">Trabajador</option>
                             <option class="text-text-main-dark" value="cliente">Cliente</option>
                         </select>
                     </label>
-                    <button class="w-full bg-primary text-background-dark h-14 rounded-lg text-base font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors duration-200">
+                    <!-- Botón de Crear Cuenta -->
+                    <button type="submit" class="w-full bg-primary text-background-dark h-14 rounded-lg text-base font-bold uppercase tracking-wider hover:bg-primary/90 transition-colors duration-200">
                         Crear Cuenta
                     </button>
-                </div>
+                </form>
                 <div class="flex items-center px-4">
                     <hr class="w-full border-t border-text-secondary-dark/30"/>
                     <span class="px-2 text-text-secondary-dark text-sm">o continuar con</span>

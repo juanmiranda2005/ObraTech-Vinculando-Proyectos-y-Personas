@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html class="dark" lang="es" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard Trabajador - ObraTech</title>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+        rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #1A1A1A 0%, #2A2A2A 100%);
+            border: 1px solid rgba(255, 152, 0, 0.2);
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            border-color: rgba(255, 152, 0, 0.5);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(255, 152, 0, 0.2);
+        }
+
+        .project-card {
+            background: linear-gradient(135deg, #1A1A1A 0%, #242424 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            border-color: rgba(255, 152, 0, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .gradient-bg {
+            background: linear-gradient(135deg, #FF9800 0%, #FF6B00 100%);
+        }
+
+        .sidebar-link {
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-link:hover {
+            background: rgba(255, 152, 0, 0.1);
+            border-left: 3px solid #FF9800;
+        }
+
+        .progress-bar {
+            background: linear-gradient(90deg, #FF9800 0%, #FF6B00 100%);
+            height: 8px;
+            border-radius: 4px;
+        }
+    </style>
+    <script>
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#FF9800",
+                        "background-light": "#f6f7f8",
+                        "background-dark": "#121212",
+                        "surface-dark": "#1A1A1A",
+                        "text-main-dark": "#E0E0E0",
+                        "text-secondary-dark": "#A0A0A0",
+                    },
+                    fontFamily: {
+                        "display": ["Work Sans", "sans-serif"]
+                    },
+                },
+            },
+        }
+    </script>
+</head>
+
+<body class="bg-background-dark font-display text-white">
+    <!-- Sidebar -->
+    <div class="fixed left-0 top-0 h-full w-64 bg-surface-dark border-r border-gray-800 z-40">
+        <div class="p-6 border-b border-gray-800">
+            <div class="flex items-center space-x-3">
+                <img alt="ObraTech Logo" class="h-10" src="/img/logo3.png" />
+                <span class="text-xl font-bold text-white">ObraTech</span>
+            </div>
+        </div>
+        <nav class="p-4 space-y-2">
+            <a th:href="@{/desboard}"
+                class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg bg-primary/20 border-l-3 border-primary">
+                <span class="material-symbols-outlined text-primary">dashboard</span>
+                <span class="text-text-main-dark font-medium">Dashboard</span>
+            </a>
+
+                    <!-- Opciones para Trabajador -->
+                    <div class="mt-4">
+                        <p class="text-xs text-text-secondary-dark px-4 font-medium mb-2 uppercase">Mi Trabajo</p>
+                        <a th:href="@{/proyectos-disponibles}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition" title="Próximamente">
+                            <span class="material-symbols-outlined text-text-secondary-dark">construction</span>
+                            <span class="text-text-secondary-dark">Proyectos Asignados</span>
+                        </a>
+                        <a th:href="@{/postulaciones}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition">
+                            <span class="material-symbols-outlined text-text-secondary-dark">assignment_turned_in</span>
+                            <span class="text-text-secondary-dark">Proyectos Disponibles</span>
+                        </a>
+                        <a th:href="@{#}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition" title="Próximamente">
+                            <span class="material-symbols-outlined text-text-secondary-dark">task</span>
+                            <span class="text-text-secondary-dark">Mis Tareas</span>
+                        </a>
+                        <a th:href="@{/perfil-laboral}" class="sidebar-link flex items-center space-x-3 px-4 py-3 rounded-lg hover:bg-gray-800 transition">
+                            <span class="material-symbols-outlined text-text-secondary-dark">person</span>
+                            <span class="text-text-secondary-dark">Mi Perfil</span>
+                        </a>
+                    </div>        
+        </nav>
+        <div class="absolute bottom-0 left-0 right-0 p-4 border-t border-gray-800">
+            <div class="flex items-center space-x-3 mb-3">
+                <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center">
+                    <span
+                        th:text="${session.usuario.username != null ? session.usuario.username.substring(0,1).toUpperCase() : 'U'}"></span>
+                </div>
+                <div class="flex-1">
+                    <p class="text-text-main-dark font-medium text-sm" th:text="${session.usuario.username}">Usuario</p>
+                    <p class="text-text-secondary-dark text-xs">Trabajador</p>
+                </div>
+            </div>
+            <form th:action="@{/logout}" method="post" class="w-full">
+                <button type="submit"
+                    class="w-full flex items-center justify-center space-x-2 px-4 py-2 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 transition-colors">
+                    <span class="material-symbols-outlined">logout</span>
+                    <span>Cerrar Sesión</span>
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="ml-64 min-h-screen">
+        <!-- Header -->
+        <header class="bg-surface-dark border-b border-gray-800 px-8 py-6">
+            <div class="flex items-center justify-between">
+                <div>
+                    <h1 class="text-2xl font-bold text-white">Bienvenido, <span
+                            th:text="${session.usuario.username}">Trabajador</span></h1>
+                    <p class="text-text-secondary-dark text-sm mt-1">Visualiza tus proyectos y tareas asignadas</p>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <button class="p-2 rounded-lg bg-surface-dark hover:bg-gray-800 transition-colors">
+                        <span class="material-symbols-outlined text-text-secondary-dark">notifications</span>
+                    </button>
+                    <a th:href="@{/perfil-laboral}"
+                        class="gradient-bg px-6 py-2 rounded-lg text-white font-medium hover:opacity-90 transition-opacity flex items-center justify-center space-x-2">
+                        <span class="material-symbols-outlined align-middle">person</span>
+                        <span>Mi Perfil</span>
+                    </a>
+                </div>
+            </div>
+        </header>
+
+        <!-- Dashboard Content -->
+        <main class="p-8">
+            <!-- Stats Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                <div class="stat-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 gradient-bg rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white">assignment</span>
+                        </div>
+                        <span class="text-green-400 text-sm font-medium">+1</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-1">3</h3>
+                    <p class="text-text-secondary-dark text-sm">Proyectos Activos</p>
+                </div>
+
+                <div class="stat-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-blue-500 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white">task</span>
+                        </div>
+                        <span class="text-green-400 text-sm font-medium">5 hoy</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-1">12</h3>
+                    <p class="text-text-secondary-dark text-sm">Tareas Pendientes</p>
+                </div>
+
+                <div class="stat-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-purple-500 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white">trending_up</span>
+                        </div>
+                        <span class="text-green-400 text-sm font-medium">4.7★</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-1">4.7</h3>
+                    <p class="text-text-secondary-dark text-sm">Calificación Promedio</p>
+                </div>
+
+                <div class="stat-card rounded-xl p-6">
+                    <div class="flex items-center justify-between mb-4">
+                        <div class="w-12 h-12 bg-green-500 rounded-lg flex items-center justify-center">
+                            <span class="material-symbols-outlined text-white">check_circle</span>
+                        </div>
+                        <span class="text-green-400 text-sm font-medium">156 hrs</span>
+                    </div>
+                    <h3 class="text-3xl font-bold text-white mb-1">156</h3>
+                    <p class="text-text-secondary-dark text-sm">Horas Trabajadas</p>
+                </div>
+            </div>
+
+            <!-- Main Content Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Proyectos Asignados -->
+                <div class="lg:col-span-2">
+                    <div class="bg-surface-dark rounded-xl p-6 border border-gray-800">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-2xl font-bold text-white">Mis Proyectos</h2>
+                            <a th:href="@{#}" class="text-primary hover:text-orange-400 text-sm font-medium" title="Próximamente">Ver todos →</a>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Project 1 -->
+                            <div class="project-card rounded-xl p-4">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">Torre Residencial A</h3>
+                                        <p class="text-text-secondary-dark text-sm">Contratista: BuildCorp</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-green-500/20 text-green-400 rounded-full text-xs font-medium">En Progreso</span>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="flex items-center justify-between text-sm mb-2">
+                                        <span class="text-text-secondary-dark">Mi Avance</span>
+                                        <span class="text-white font-medium">68%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="progress-bar" style="width: 68%"></div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-text-secondary-dark">Tareas: 15/22 completadas</span>
+                                    <a href="#" class="text-primary hover:text-orange-400 font-medium">Ver detalles →</a>
+                                </div>
+                            </div>
+
+                            <!-- Project 2 -->
+                            <div class="project-card rounded-xl p-4">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">Centro Comercial Norte</h3>
+                                        <p class="text-text-secondary-dark text-sm">Contratista: EliteBuilding</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-blue-500/20 text-blue-400 rounded-full text-xs font-medium">Planificación</span>
+                                </div>
+                                <div class="mb-3">
+                                    <div class="flex items-center justify-between text-sm mb-2">
+                                        <span class="text-text-secondary-dark">Mi Avance</span>
+                                        <span class="text-white font-medium">30%</span>
+                                    </div>
+                                    <div class="w-full bg-gray-700 rounded-full h-2">
+                                        <div class="progress-bar" style="width: 30%"></div>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-text-secondary-dark">Tareas: 8/28 completadas</span>
+                                    <a href="#" class="text-primary hover:text-orange-400 font-medium">Ver detalles →</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Proyectos Disponibles para Postulación -->
+                    <div class="bg-surface-dark rounded-xl p-6 border border-gray-800 mt-6">
+                        <div class="flex items-center justify-between mb-6">
+                            <h2 class="text-2xl font-bold text-white">Proyectos Disponibles</h2>
+                            <a th:href="@{/postulaciones}" class="text-primary hover:text-orange-400 text-sm font-medium">Ver todos →</a>
+                        </div>
+
+                        <div class="space-y-4">
+                            <!-- Available Project 1 -->
+                            <div class="project-card rounded-xl p-4 border-l-4 border-orange-500">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">Villa Moderna - Remodelación</h3>
+                                        <p class="text-text-secondary-dark text-sm">Tipo: Residencial | Ubicación: Cartagena</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-xs font-medium">Abierto</span>
+                                </div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <div>
+                                        <p class="text-text-secondary-dark text-sm mb-1">Presupuesto: <span class="text-white font-medium">$280K</span></p>
+                                        <p class="text-text-secondary-dark text-sm">Plazo: 4 meses | Postulantes: 12</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm pt-3 border-t border-gray-700">
+                                    <span class="text-text-secondary-dark">Cierre de postulación en 5 días</span>
+                                    <a th:href="@{/postulaciones/3}" class="gradient-bg hover:opacity-90 px-4 py-2 rounded-lg text-white font-medium transition-opacity inline-block">
+                                        Ver y Postularme
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Available Project 2 -->
+                            <div class="project-card rounded-xl p-4 border-l-4 border-orange-500">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">Oficina Corporativa</h3>
+                                        <p class="text-text-secondary-dark text-sm">Tipo: Comercial | Ubicación: Bogotá</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-xs font-medium">Abierto</span>
+                                </div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <div>
+                                        <p class="text-text-secondary-dark text-sm mb-1">Presupuesto: <span class="text-white font-medium">$1.2M</span></p>
+                                        <p class="text-text-secondary-dark text-sm">Plazo: 8 meses | Postulantes: 8</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm pt-3 border-t border-gray-700">
+                                    <span class="text-text-secondary-dark">Cierre de postulación en 10 días</span>
+                                    <a th:href="@{/postulaciones/4}" class="gradient-bg hover:opacity-90 px-4 py-2 rounded-lg text-white font-medium transition-opacity inline-block">
+                                        Ver y Postularme
+                                    </a>
+                                </div>
+                            </div>
+
+                            <!-- Available Project 3 -->
+                            <div class="project-card rounded-xl p-4 border-l-4 border-orange-500">
+                                <div class="flex items-start justify-between mb-3">
+                                    <div>
+                                        <h3 class="text-lg font-bold text-white">Centro Médico</h3>
+                                        <p class="text-text-secondary-dark text-sm">Tipo: Institucional | Ubicación: Medellín</p>
+                                    </div>
+                                    <span class="px-3 py-1 bg-orange-500/20 text-orange-400 rounded-full text-xs font-medium">Abierto</span>
+                                </div>
+                                <div class="flex items-center justify-between mb-3">
+                                    <div>
+                                        <p class="text-text-secondary-dark text-sm mb-1">Presupuesto: <span class="text-white font-medium">$850K</span></p>
+                                        <p class="text-text-secondary-dark text-sm">Plazo: 6 meses | Postulantes: 15</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center justify-between text-sm pt-3 border-t border-gray-700">
+                                    <span class="text-text-secondary-dark">Cierre de postulación en 7 días</span>
+                                    <a th:href="@{/postulaciones/5}" class="gradient-bg hover:opacity-90 px-4 py-2 rounded-lg text-white font-medium transition-opacity inline-block">
+                                        Ver y Postularme
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tareas Pendientes -->
+                <div>
+                    <div class="bg-surface-dark rounded-xl p-6 border border-gray-800">
+                        <div class="flex items-center justify-between mb-6">
+                            <h3 class="text-xl font-bold text-white">Tareas de Hoy</h3>
+                            <a th:href="@{#}" class="text-primary hover:text-orange-400 text-xs font-medium" title="Próximamente">Ver todas →</a>
+                        </div>
+
+                        <div class="space-y-3">
+                            <!-- Tarea 1 -->
+                            <div class="flex items-start space-x-3 p-3 bg-gray-800/50 rounded-lg border-l-4 border-red-500">
+                                <input type="checkbox" class="mt-1 w-4 h-4 rounded">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-white font-medium text-sm">Excavación Zona A</p>
+                                    <p class="text-text-secondary-dark text-xs">Torre Residencial A</p>
+                                    <p class="text-red-400 text-xs mt-1">Vencimiento: Hoy 6 PM</p>
+                                </div>
+                            </div>
+
+                            <!-- Tarea 2 -->
+                            <div class="flex items-start space-x-3 p-3 bg-gray-800/50 rounded-lg border-l-4 border-yellow-500">
+                                <input type="checkbox" class="mt-1 w-4 h-4 rounded">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-white font-medium text-sm">Encofrado Nivel 2</p>
+                                    <p class="text-text-secondary-dark text-xs">Torre Residencial A</p>
+                                    <p class="text-yellow-400 text-xs mt-1">Vencimiento: Mañana 8 AM</p>
+                                </div>
+                            </div>
+
+                            <!-- Tarea 3 -->
+                            <div class="flex items-start space-x-3 p-3 bg-gray-800/50 rounded-lg border-l-4 border-green-500">
+                                <input type="checkbox" checked class="mt-1 w-4 h-4 rounded">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-white font-medium text-sm line-through">Inspección Acero</p>
+                                    <p class="text-text-secondary-dark text-xs">Centro Comercial</p>
+                                    <p class="text-green-400 text-xs mt-1">Completada</p>
+                                </div>
+                            </div>
+
+                            <!-- Tarea 4 -->
+                            <div class="flex items-start space-x-3 p-3 bg-gray-800/50 rounded-lg border-l-4 border-blue-500">
+                                <input type="checkbox" class="mt-1 w-4 h-4 rounded">
+                                <div class="flex-1 min-w-0">
+                                    <p class="text-white font-medium text-sm">Hormigonado Piso 3</p>
+                                    <p class="text-text-secondary-dark text-xs">Torre Residencial A</p>
+                                    <p class="text-blue-400 text-xs mt-1">Vencimiento: En 3 días</p>
+                                </div>
+                            </div>
+
+                            <a th:href="@{#}"
+                                class="w-full mt-4 px-4 py-2 bg-primary hover:bg-orange-600 text-white rounded-lg font-medium transition-colors text-center text-sm" title="Próximamente">
+                                Ver Todas las Tareas
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity Section -->
+            <div class="mt-8">
+                <div class="bg-surface-dark rounded-xl p-6 border border-gray-800">
+                    <h3 class="text-xl font-bold text-white mb-6">Actividad Reciente</h3>
+                    <div class="space-y-4">
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 gradient-bg rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-white text-sm">task_alt</span>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-text-main-dark text-sm">Completaste la tarea: <span class="font-medium">"Inspección Acero"</span></p>
+                                <p class="text-text-secondary-dark text-xs mt-1">Hace 2 horas</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-blue-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-white text-sm">star</span>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-text-main-dark text-sm">Recibiste calificación: <span class="font-medium">4.8★</span> en proyecto</p>
+                                <p class="text-text-secondary-dark text-xs mt-1">Hace 1 día</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-white text-sm">check_circle</span>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-text-main-dark text-sm">Fase completada: <span class="font-medium">"Excavación"</span> en Torre Residencial A</p>
+                                <p class="text-text-secondary-dark text-xs mt-1">Hace 3 días</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="w-10 h-10 bg-purple-500 rounded-full flex items-center justify-center flex-shrink-0">
+                                <span class="material-symbols-outlined text-white text-sm">assignment</span>
+                            </div>
+                            <div class="flex-1">
+                                <p class="text-text-main-dark text-sm">Nuevo proyecto asignado: <span class="font-medium">"Centro Comercial Norte"</span></p>
+                                <p class="text-text-secondary-dark text-xs mt-1">Hace 1 semana</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+</body>
+
+</html>

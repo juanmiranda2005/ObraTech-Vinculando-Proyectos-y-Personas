@@ -67,7 +67,7 @@ public class ProyectoControllers {
             proyecto.setFechaInicio(LocalDate.now());
         }
 
-        // Guardar proyecto con el cliente actual
+        // Guardar proyecto
         proyectoService.publicarProyecto(proyecto, usuario);
 
         return "redirect:/proyectos/mis-proyectos";
@@ -82,17 +82,15 @@ public class ProyectoControllers {
             return "redirect:/login";
         }
 
-        // Obtener solo los proyectos del usuario actual
         List<Proyecto> proyectos = proyectoRepository.findAll();
         proyectos = proyectos.stream()
                 .filter(p -> p.getCliente() != null && p.getCliente().getId().equals(usuario.getId()))
                 .toList();
 
-        // Calcular conteos de estados
         long enProgreso = proyectos.stream()
                 .filter(p -> "En Progreso".equals(p.getEstadoEjecucion()))
                 .count();
-        
+
         long completados = proyectos.stream()
                 .filter(p -> "Completado".equals(p.getEstadoEjecucion()))
                 .count();
@@ -102,11 +100,12 @@ public class ProyectoControllers {
         model.addAttribute("totalProyectos", proyectos.size());
         model.addAttribute("proyectosEnProgreso", enProgreso);
         model.addAttribute("proyectosCompletados", completados);
+
         return "mis-proyectos";
     }
 
     // Ver detalles de un proyecto
-    @GetMapping("/{id}")
+    @GetMapping("/{id:\\d+}")
     public String verDetallesProyecto(
             @PathVariable Long id,
             HttpSession session,
@@ -130,7 +129,7 @@ public class ProyectoControllers {
     }
 
     // Editar proyecto
-    @GetMapping("/{id}/editar")
+    @GetMapping("/{id:\\d+}/editar")
     public String mostrarFormularioEditar(
             @PathVariable Long id,
             HttpSession session,
@@ -154,7 +153,7 @@ public class ProyectoControllers {
     }
 
     // Guardar cambios de proyecto
-    @PostMapping("/{id}/editar")
+    @PostMapping("/{id:\\d+}/editar")
     public String editarProyecto(
             @PathVariable Long id,
             @ModelAttribute Proyecto proyectoEditado,
@@ -172,7 +171,6 @@ public class ProyectoControllers {
             return "redirect:/proyectos/mis-proyectos";
         }
 
-        // Actualizar campos permitidos
         proyecto.setTitulo(proyectoEditado.getTitulo());
         proyecto.setDescripcion(proyectoEditado.getDescripcion());
         proyecto.setUbicacion(proyectoEditado.getUbicacion());
@@ -189,7 +187,7 @@ public class ProyectoControllers {
     }
 
     // Eliminar proyecto
-    @PostMapping("/{id}/eliminar")
+    @PostMapping("/{id:\\d+}/eliminar")
     public String eliminarProyecto(
             @PathVariable Long id,
             HttpSession session) {
@@ -209,4 +207,3 @@ public class ProyectoControllers {
         return "redirect:/proyectos/mis-proyectos";
     }
 }
-

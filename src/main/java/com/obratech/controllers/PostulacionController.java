@@ -24,7 +24,6 @@ public class PostulacionController {
     private ProyectoRepository proyectoRepository;
 
     // Enviar postulación a un proyecto - ACEPTAR GET y POST
-    @GetMapping("/postular/{id}")
     @PostMapping("/postular/{id}")
     public String postularseProyecto(
             @PathVariable Long id,
@@ -92,7 +91,7 @@ public class PostulacionController {
     }
 
     // Ver detalles de proyecto para postulación - ONLY GET
-    @GetMapping("/{id}")
+    @GetMapping("/ver/{id}")
     public String verDetallesProyecto(
             @PathVariable Long id,
             HttpSession session,

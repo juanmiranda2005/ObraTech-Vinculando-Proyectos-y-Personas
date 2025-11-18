@@ -248,11 +248,12 @@
                         <div class="text-sm text-text-secondary-dark space-y-1 mb-4 flex-grow">
                             <div class="flex justify-between">
                                 <span>Inicio:</span>
-                                <span th:text="${#dates.format(proyecto.fechaInicio, 'dd/MM/yyyy')}">--/--/----</span>
+                                <span th:text="${proyecto.fechaInicio != null ? proyecto.fechaInicio.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy')) : '--/--/----'}"></span>
+
                             </div>
                             <div class="flex justify-between">
                                 <span>Entrega:</span>
-                                <span th:text="${#dates.format(proyecto.fechaEntrega, 'dd/MM/yyyy')}">--/--/----</span>
+                                <span th:text="${proyecto.fechaEntrega != null ? proyecto.fechaEntrega.format(T(java.time.format.DateTimeFormatter).ofPattern('dd/MM/yyyy')) : '--/--/----'}"></span>
                             </div>
                         </div>
 
